@@ -1,0 +1,76 @@
+;
+; MettlerMate.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider=%ManufacturerName%
+CatalogFile=MettlerMate.cat
+DriverVer=
+PnpLockDown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+MettlerMate_Device_CoInstaller_CopyFiles = 11
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+MettlerMate.sys  = 1,,
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NT$ARCH$
+
+[Standard.NT$ARCH$]
+"Mettler Toledo PS60 HID"=MettlerMate_Device, HID\VID_0EB8&PID_F000
+
+[MettlerMate_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+MettlerMate.sys
+
+;-------------- Service installation
+[MettlerMate_Device.NT.Services]
+AddService = MettlerMate,%SPSVCINST_ASSOCSERVICE%, MettlerMate_Service_Inst
+
+; -------------- MettlerMate driver install sections
+[MettlerMate_Service_Inst]
+DisplayName    = %MettlerMate.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\MettlerMate.sys
+
+;
+;--- MettlerMate_Device Coinstaller installation ------
+;
+
+[MettlerMate_Device.NT.CoInstallers]
+AddReg=MettlerMate_Device_CoInstaller_AddReg
+CopyFiles=MettlerMate_Device_CoInstaller_CopyFiles
+
+[MettlerMate_Device_CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
+
+[MettlerMate_Device_CoInstaller_CopyFiles]
+WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
+
+[MettlerMate_Device.NT.Wdf]
+KmdfService =  MettlerMate, MettlerMate_wdfsect
+[MettlerMate_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Mettler Toledo"
+DiskName = "MettlerMate Installation Disk"
+MettlerMate.SVCDESC = "MettlerMate Service"
