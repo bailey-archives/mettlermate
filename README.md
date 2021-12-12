@@ -1,3 +1,5 @@
+> ⚠️ **This repository was originally created by [@baileyherbert](https://github.com/baileyherbert) and is no longer maintained. It has been moved here for preservation. The code within it might be outdated or broken.**
+
 # MettlerMate
 
 ## Introduction
@@ -6,14 +8,10 @@ This is a simple filter driver that makes Mettler Toledo BC60 scales work with P
 for an HID USB filter driver that intercepts and modifies read reports, descriptors, and more.
 
 The Mettler Toledo BC60 series is supposed to be fully backwards compatible with the PS60. However, a small programming
-error in PostalMate prevents the software from reading the correct weight in lb-oz unit mode.
-
-Their support team insisted it was the scale's fault. Here is a driver to prove otherwise.
+error in PostalMate prevents the software from reading the correct weight in lb-oz unit mode. This driver intercepts and
+converts the data as it flows from the USB to the software.
 
 ## Installation
-
-Follow these steps in order to install the driver for development. This project is not intended for use on commercial
-machines at this time, but if you're able to sign the driver, then go right ahead!
 
 **Preparation**
 
